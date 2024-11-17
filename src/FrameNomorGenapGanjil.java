@@ -10,6 +10,10 @@
  */
 public class FrameNomorGenapGanjil extends javax.swing.JFrame {
     
+    private void bersihkanTextField() {
+    txtInput.setText(""); // Kosongkan teks di txtInput
+}
+    
     // Method untuk memfilter input hanya angka
 private void hanyaAngka(java.awt.event.KeyEvent evt) {
     char input = evt.getKeyChar();
@@ -28,12 +32,28 @@ private void cekGenapGanjil() {
         String input = txtInput.getText();
         int number = Integer.parseInt(input);
 
-        // Periksa genap atau ganjil
-        if (number % 2 == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Angka " + number + " adalah Genap.");
+        // Periksa apakah genap atau ganjil
+        String hasilGenapGanjil = (number % 2 == 0) ? "Genap" : "Ganjil";
+
+        // Periksa apakah bilangan prima
+        boolean isPrima = true;
+        if (number <= 1) {
+            isPrima = false; // Bilangan <= 1 bukan prima
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Angka " + number + " adalah Ganjil.");
+            for (int i = 2; i <= Math.sqrt(number); i++) {
+                if (number % i == 0) {
+                    isPrima = false;
+                    break;
+                }
+            }
         }
+
+        // Gabungkan hasil
+        String hasilPrima = isPrima ? "dan Bilangan Prima." : "dan Bukan Bilangan Prima.";
+        String hasilAkhir = "Angka " + number + " adalah " + hasilGenapGanjil + " " + hasilPrima;
+
+        // Tampilkan hasil
+        javax.swing.JOptionPane.showMessageDialog(this, hasilAkhir);
     } catch (NumberFormatException e) {
         // Jika input tidak valid
         javax.swing.JOptionPane.showMessageDialog(this, "Harap masukkan angka yang valid!", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
@@ -66,6 +86,11 @@ private void cekGenapGanjil() {
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
+        txtInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtInputFocusGained(evt);
+            }
+        });
         txtInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtInputKeyTyped(evt);
@@ -111,6 +136,10 @@ private void cekGenapGanjil() {
     private void txtInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtInputKeyTyped
      hanyaAngka(evt);        // TODO add your handling code here:
     }//GEN-LAST:event_txtInputKeyTyped
+
+    private void txtInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtInputFocusGained
+      bersihkanTextField();        // TODO add your handling code here:
+    }//GEN-LAST:event_txtInputFocusGained
 
     /**
      * @param args the command line arguments
